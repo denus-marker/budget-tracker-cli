@@ -5,6 +5,7 @@ import model.TransactionType;
 import service.TransactionService;
 import storage.FileStorage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -34,7 +35,8 @@ public class ConsoleUI {
             System.out.println("2. Show all transactions");
             System.out.println("3. Show account balance");
             System.out.println("4. Filter by category");
-            System.out.println("5. Exit");
+            System.out.println("5. Delete transaction");
+            System.out.println("6. Exit");
             System.out.println("Please choose: ");
 
             String choice = scanner.nextLine();
@@ -53,6 +55,9 @@ public class ConsoleUI {
                     filterByCategory(scanner, service);
                     break;
                 case "5":
+                    deleteTransaction(scanner,service);
+                    break;
+                case "6":
                     storage.save(service.getAllTransactions());
                     running = false;
                     System.out.println("Bye!");
@@ -113,5 +118,28 @@ public class ConsoleUI {
                 System.out.println(t);
             }
         }
+    }
+
+    private void deleteTransaction(Scanner scanner, TransactionService service) {
+        List<Transaction> transactions = service.getAllTransactions();
+        if (transactions.isEmpty()) {
+            System.out.println("Empty for now.");
+            return;
+        }
+        for (int i = 0; i < transactions.size(); i++) {
+            System.out.println( (i+1) + ". " + transactions.get(i));
+        }
+
+        System.out.println("Enter the transaction number you want to delete: ");
+        int index;
+        try {
+            index = Integer.parseInt(scanner.nextLine()) - 1;
+        } catch (NumberFormatException e){
+            System.out.println("Invalid input.");
+            return;
+        }
+        boolean deleted = service.deleteTransaction(index);
+        if (deleted) System.out.println("Transaction was deleted.");
+        else System.out.println("No transaction with that number.");
     }
 }

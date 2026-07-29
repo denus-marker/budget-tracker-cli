@@ -38,4 +38,12 @@ public class TransactionService {
         }
         return result;
     }
+
+    public boolean deleteTransaction(int index){
+        if (index<0 || index >= transactions.size()){
+            return false;
+        }
+        transactions.remove(index);
+        return true;
+    }
 }
