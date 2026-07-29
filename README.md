@@ -13,6 +13,7 @@ business logic, storage, and UI layers).
 - Calculate current balance (income minus expenses)
 - Filter transactions by category
 - Persist data between sessions (saved to a local file)
+- Delete transactions
 
 ## Tech Stack
 
