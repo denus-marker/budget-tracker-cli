@@ -1,0 +1,4 @@
+zarplata;90000.0;rabota;INCOME;2026-07-29
+kofe;200.0;eda;EXPENSE;2026-07-29
+kofe family;10000.0;eda;EXPENSE;2026-07-29
+99-ta;6700.0;mashina;EXPENSE;2026-07-29
