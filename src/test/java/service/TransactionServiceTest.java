@@ -84,4 +84,27 @@ public class TransactionServiceTest {
         assertEquals("test52", res.get(1).getDescription());
     }
 
+    @Test
+    void editTransactionShouldReplaceItByIndex() {
+        TransactionService service = new TransactionService();
+        service.addTransaction(new Transaction("test60", 100, "test60", TransactionType.EXPENSE, LocalDate.now()));
+
+        Transaction updated = new Transaction("updated", 200, "updatedCategory", TransactionType.INCOME, LocalDate.now());
+        boolean ok = service.editTransaction(0, updated);
+
+        assertEquals(true, ok);
+        assertEquals(updated, service.getAllTransactions().getFirst());
+    }
+
+    @Test
+    void editTransactionShouldReturnFalseForInvalidIndex() {
+        TransactionService service = new TransactionService();
+        service.addTransaction(new Transaction("test61", 100, "test61", TransactionType.EXPENSE, LocalDate.now()));
+
+        Transaction updated = new Transaction("updated", 200, "updatedCategory", TransactionType.INCOME, LocalDate.now());
+        boolean ok = service.editTransaction(5, updated);
+
+        assertEquals(false, ok);
+    }
+
 }

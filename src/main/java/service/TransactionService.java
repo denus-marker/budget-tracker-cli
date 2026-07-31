@@ -46,4 +46,12 @@ public class TransactionService {
         transactions.remove(index);
         return true;
     }
+
+    public boolean editTransaction(int index, Transaction update){
+        if (index<0 || index >= transactions.size()){
+            return false;
+        }
+        transactions.set(index, update);
+        return true;
+    }
 }
