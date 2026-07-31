@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Transaction {
     private String description;
@@ -41,4 +42,21 @@ public class Transaction {
     public String toString(){
         return date + " | "+ type + " | " + category + " | " + amount + " | " + description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return Double.compare(amount, that.amount) == 0 &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(category, that.category) &&
+                type == that.type &&
+                Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, amount, category, type, date);
+    }
+
 }
