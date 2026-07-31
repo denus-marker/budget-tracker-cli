@@ -43,22 +43,22 @@ public class ConsoleUI {
 
             switch (choice){
                 case "1":
-                    addTransaction(scanner,service);
+                    addTransaction();
                     break;
                 case "2":
-                    showAll(service);
+                    showAll();
                     break;
                 case "3":
                     System.out.println("Account balance: " + service.getBalance());
                     break;
                 case "4":
-                    filterByCategory(scanner, service);
+                    filterByCategory();
                     break;
                 case "5":
-                    deleteTransaction(scanner,service);
+                    deleteTransaction();
                     break;
                 case "6":
-                    editTransaction(scanner, service);
+                    editTransaction();
                     break;
                 case "7":
                     storage.save(service.getAllTransactions());
@@ -71,7 +71,7 @@ public class ConsoleUI {
         }
     }
 
-    private static void addTransaction(Scanner scanner, TransactionService service){
+    private void addTransaction(){
         System.out.println("Description: ");
         String description = scanner.nextLine();
 
@@ -97,7 +97,7 @@ public class ConsoleUI {
         System.out.println("Added.");
     }
 
-    private static void showAll(TransactionService service){
+    private void showAll(){
         List<Transaction> transactions = service.getAllTransactions();
         if (transactions.isEmpty()){
             System.out.println("Empty for now.");
@@ -109,7 +109,7 @@ public class ConsoleUI {
         }
     }
 
-    private static void filterByCategory(Scanner scanner, TransactionService service){
+    private void filterByCategory(){
         System.out.println("Enter a category: ");
         String category = scanner.nextLine();
         List<Transaction> result = service.getByCategory(category);
@@ -123,7 +123,7 @@ public class ConsoleUI {
         }
     }
 
-    private static void deleteTransaction(Scanner scanner, TransactionService service) {
+    private void deleteTransaction() {
         List<Transaction> transactions = service.getAllTransactions();
         if (transactions.isEmpty()) {
             System.out.println("Empty for now.");
@@ -146,7 +146,7 @@ public class ConsoleUI {
         else System.out.println("No transaction with that number.");
     }
 
-    private static void editTransaction(Scanner scanner, TransactionService service) {
+    private void editTransaction() {
         List<Transaction> transactions = service.getAllTransactions();
 
         if (transactions.isEmpty()) {
