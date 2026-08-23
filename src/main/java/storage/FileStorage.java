@@ -4,7 +4,6 @@ import model.Transaction;
 import model.TransactionType;
 
 import java.io.*;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.time.LocalDate;
 
@@ -55,5 +54,23 @@ public class FileStorage {
         }
 
         return transactions;
+    }
+
+    public void exportToCSV(List<Transaction> transactions, String csvPath){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(csvPath))){
+
+            writer.write("Date,Type,Category,Amount,Description");
+            writer.newLine();
+
+            for (Transaction t : transactions){
+                String line = t.getDate() + "," + t.getType()+ ","+ t.getCategory() + ","+
+                        t.getAmount() + "," + t.getDescription();
+                writer.write(line);
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error exporting to CSV: " + e.getMessage());
+        }
     }
 }

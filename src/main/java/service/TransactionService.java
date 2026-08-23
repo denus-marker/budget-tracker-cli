@@ -4,6 +4,7 @@ import model.Transaction;
 import model.TransactionType;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class TransactionService {
@@ -53,5 +54,43 @@ public class TransactionService {
         }
         transactions.set(index, update);
         return true;
+    }
+
+    public List<Transaction> getSortedByDate(boolean acs) {
+        List<Transaction> sorted = new ArrayList<>(transactions);
+
+        if (acs){
+            sorted.sort(Comparator.comparing(Transaction::getDate));
+        } else{
+            sorted.sort(Comparator.comparing(Transaction::getDate).reversed());
+        }
+
+        return sorted;
+    }
+
+    /*public List<Transaction> getByType1(boolean income){
+        List<Transaction> result = new ArrayList<>();
+        for (Transaction t : transactions){
+            if (income){
+                if (t.getType().equals(TransactionType.INCOME)){
+                    result.add(t);
+                }
+            } else {
+                if (t.getType().equals(TransactionType.EXPENSE)){
+                    result.add(t);
+                }
+            }
+        }
+        return result;
+    }*/
+
+    public List<Transaction> getByType(TransactionType type) {
+        List<Transaction> result = new ArrayList<>();
+        for (Transaction t : transactions) {
+            if (t.getType() == type) {
+                result.add(t);
+            }
+        }
+        return result;
     }
 }

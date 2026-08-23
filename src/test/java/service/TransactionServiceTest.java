@@ -107,4 +107,39 @@ public class TransactionServiceTest {
         assertEquals(false, ok);
     }
 
+    @Test
+    void getSortedByDateShouldSortAscending() {
+        TransactionService service = new TransactionService();
+        service.addTransaction(new Transaction("later", 100, "test", TransactionType.EXPENSE, LocalDate.of(2026, 5, 1)));
+        service.addTransaction(new Transaction("earlier", 100, "test", TransactionType.EXPENSE, LocalDate.of(2026, 1, 1)));
+
+        List<Transaction> sorted = service.getSortedByDate(true);
+
+        assertEquals("earlier", sorted.get(0).getDescription());
+        assertEquals("later", sorted.get(1).getDescription());
+    }
+
+    @Test
+    void getSortedByDateShouldSortDescending() {
+        TransactionService service = new TransactionService();
+        service.addTransaction(new Transaction("earlier", 100, "test", TransactionType.EXPENSE, LocalDate.of(2026, 1, 1)));
+        service.addTransaction(new Transaction("later", 100, "test", TransactionType.EXPENSE, LocalDate.of(2026, 5, 1)));
+
+        List<Transaction> sorted = service.getSortedByDate(false);
+
+        assertEquals("later", sorted.get(0).getDescription());
+        assertEquals("earlier", sorted.get(1).getDescription());
+    }
+
+    @Test
+    void getByCategoryShouldReturnOnlyIncome(){
+        TransactionService service = new TransactionService();
+        service.addTransaction(new Transaction("income", 200, "test", TransactionType.INCOME, LocalDate.now()));
+        service.addTransaction(new Transaction("expense", 100, "test", TransactionType.EXPENSE, LocalDate.now()));
+
+        List<Transaction> sorted = service.getByType(TransactionType.INCOME);
+
+        assertEquals(1, sorted.size());
+        assertEquals("income", sorted.getFirst().getDescription());
+    }
 }

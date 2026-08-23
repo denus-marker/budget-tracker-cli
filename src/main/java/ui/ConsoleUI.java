@@ -36,7 +36,10 @@ public class ConsoleUI {
             System.out.println("4. Filter by category");
             System.out.println("5. Delete transaction");
             System.out.println("6. Edit transaction");
-            System.out.println("7. Exit");
+            System.out.println("7. Sort by date");
+            System.out.println("8. Export to CSV");
+            System.out.println("9. Filter by type");
+            System.out.println("10. Exit");
             System.out.println("Please choose: ");
 
             String choice = scanner.nextLine();
@@ -61,6 +64,15 @@ public class ConsoleUI {
                     editTransaction();
                     break;
                 case "7":
+                    sortTransactionsByDate();
+                    break;
+                case "8":
+                    exportToCSV();
+                    break;
+                case "9":
+                    filterByType();
+                    break;
+                case "10":
                     storage.save(service.getAllTransactions());
                     running = false;
                     System.out.println("Bye!");
@@ -231,5 +243,62 @@ public class ConsoleUI {
 
         service.editTransaction(index, updated);
         System.out.println("Transaction updated.");
+    }
+
+    private void sortTransactionsByDate() {
+        List<Transaction> tr = service.getAllTransactions();
+        if (tr.isEmpty()){ System.out.println("Empty for now."); return;}
+
+
+        System.out.println("Please choose: \n 1 - in ascending order. \n 2 - in descending order");
+        String orderChoice = scanner.nextLine();
+        if (orderChoice.equals("1")) {
+            tr = service.getSortedByDate(true);
+        } else if (orderChoice.equals("2")) {
+            tr = service.getSortedByDate(false);
+        } else System.out.println("Wrong option!");
+
+        for (Transaction t : tr){
+            System.out.println(t);
+        }
+    }
+
+    private void exportToCSV() {
+        List<Transaction> transactions = service.getAllTransactions();
+        if (transactions.isEmpty()){ System.out.println("Empty for now."); return;}
+
+        storage.exportToCSV(transactions, "transactions_export.csv");
+        System.out.println("Exported to transactions_export.csv");
+    }
+
+    private void filterByType() {
+        List<Transaction> transactions = service.getAllTransactions();
+        if (transactions.isEmpty()) {
+            System.out.println("Empty for now.");
+            return;
+        }
+
+        System.out.println("1 - Income, 2 - Expense");
+        String choice = scanner.nextLine();
+
+        TransactionType type;
+        if (choice.equals("1")) {
+            type = TransactionType.INCOME;
+        } else if (choice.equals("2")) {
+            type = TransactionType.EXPENSE;
+        } else {
+            System.out.println("Wrong option!");
+            return;
+        }
+
+        List<Transaction> result = service.getByType(type);
+        if (result.isEmpty()) {
+            System.out.println("No transactions of this type.");
+            return;
+        }
+
+        for (Transaction t : result) {
+            System.out.println(t);
+        }
     }
 }
